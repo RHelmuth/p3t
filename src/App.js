@@ -11,6 +11,7 @@ import './App.css';
 const App = () => {
   const [text, setText] = useState("");
   const [data, setData] = useState([]);
+  const [mpoddsFilter, setMpoddsFilter] = useState("");
   const [sortConfig, setSortConfig] = useState({});
 
   const dollarUS = Intl.NumberFormat("en-US", {
@@ -40,6 +41,15 @@ const App = () => {
 
   const sortedData = React.useMemo(() => {
     let sortableData = [...data];
+    sortableData = sortableData.map((item) => {
+      item.expectancy = item.mprofit * item.mpodds - item.mloss * item.mlodds;
+      return item;
+    });
+
+    if (mpoddsFilter) {
+      sortableData = sortableData.filter((item) => item.mpodds*100 > mpoddsFilter);
+    }
+
     if (sortConfig.column) {
       sortableData.sort((a, b) => {
         if (sortConfig.direction === 'ascending') {
@@ -50,7 +60,7 @@ const App = () => {
       });
     }
     return sortableData;
-  }, [data, sortConfig]);
+  }, [data, sortConfig, mpoddsFilter]);
   
   return (
     <Container fluid>
@@ -94,7 +104,8 @@ const App = () => {
                 ) : null}
               </th>
               <th onClick={() => handleSort('mpodds')}>
-                Chance Max Profit
+                Chance Max Profit {<br></br>}
+                <input type="text" placeholder="Filter ..." value={mpoddsFilter} onChange={(e) => setMpoddsFilter(e.target.value)}/>
                 {sortConfig.column === 'mpodds' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
@@ -102,6 +113,12 @@ const App = () => {
               <th onClick={() => handleSort('mlodds')}>
                 Chance Max Loss
                 {sortConfig.column === 'mlodds' ? (
+                  sortConfig.direction === 'ascending' ? '🔼' : '🔽'
+                ) : null}
+              </th>
+              <th onClick={() => handleSort('IV Rank')}>
+                IV Rank
+                {sortConfig.column === 'IV Rank' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
               </th>
@@ -120,10 +137,11 @@ const App = () => {
                 <td>{item.text}</td>
                 <td>{item.days}</td>
                 <td>{dollarUS.format(Math.round(item.mprofit))}</td>
-                <th>{dollarUS.format(Math.round(item.mloss))}</th>
+                <td>{dollarUS.format(Math.round(item.mloss))}</td>
                 <td>{Math.round(item.mpodds*100)}%</td>
                 <td>{Math.round(item.mlodds*100)}%</td>
-                <td>{dollarUS.format(Math.round(Number((item.mprofit * item.mpodds) - (item.mloss * item.mlodds))))}</td>
+                <td>{Math.round(item.ivr)}%</td>
+                <td>{dollarUS.format(Math.round(item.expectancy))}</td>
               </tr>
             ))}
           </tbody>
