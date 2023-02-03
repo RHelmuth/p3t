@@ -66,7 +66,7 @@ const App = () => {
     }
 
     if (mlossFilter) {
-      sortableData = sortableData.filter((item) => item.mloss > mlossFilter);
+      sortableData = sortableData.filter((item) => item.mloss < mlossFilter);
     }
 
     if (mpoddsFilter) {
