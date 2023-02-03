@@ -9,10 +9,6 @@ html, body {
   background-color: #212529!important;
 } 
 
-Container {
-  height: 95vh!important;
-}
-
 :root {
   color-scheme: dark;
 }
@@ -48,8 +44,8 @@ Button {
 }
 
 .table-responsive {
-  height: 45vh!important;
-  max-height: 45vh!important;
+  height: 70vh!important;
+  max-height: 70vh!important;
   overflow-y: scroll!important;
   border: none!important;
 }
