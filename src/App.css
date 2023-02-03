@@ -65,3 +65,8 @@ textarea {
   font-size: 14px;
   margin-bottom: 20px;
 }
+
+input {
+  text-align: center!important;
+  text-transform: uppercase;
+}

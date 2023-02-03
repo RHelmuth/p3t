@@ -11,7 +11,14 @@ import './App.css';
 const App = () => {
   const [text, setText] = useState("");
   const [data, setData] = useState([]);
+  const [symbolFilter, setSymbolFilter] = useState("");
+  const [dteFilter, setDteFilter] = useState("");
+  const [mprofitFilter, setMprofitFilter] = useState("");
+  const [mlossFilter, setMlossFilter] = useState("");
   const [mpoddsFilter, setMpoddsFilter] = useState("");
+  const [mloddsFilter, setMloddsFilter] = useState("");
+  const [ivrFilter, setIvrFilter] = useState("");
+  const [p3tFilter, setP3tFilter] = useState("");
   const [sortConfig, setSortConfig] = useState({});
 
   const dollarUS = Intl.NumberFormat("en-US", {
@@ -46,9 +53,38 @@ const App = () => {
       return item;
     });
 
+    if (symbolFilter) {
+      sortableData = sortableData.filter((item) => item.symbol == symbolFilter);
+    }
+
+    if (dteFilter) {
+      sortableData = sortableData.filter((item) => item.days > dteFilter);
+    }
+
+    if (mprofitFilter) {
+      sortableData = sortableData.filter((item) => item.mprofit > mprofitFilter);
+    }
+
+    if (mlossFilter) {
+      sortableData = sortableData.filter((item) => item.mloss > mlossFilter);
+    }
+
     if (mpoddsFilter) {
       sortableData = sortableData.filter((item) => item.mpodds*100 > mpoddsFilter);
     }
+
+    if (mloddsFilter) {
+      sortableData = sortableData.filter((item) => item.mlodds*100 > mloddsFilter);
+    }
+
+    if (ivrFilter) {
+      sortableData = sortableData.filter((item) => item.ivr*100 > mloddsFilter);
+    }
+
+    if (p3tFilter) {
+      sortableData = sortableData.filter((item) => item.expectancy > p3tFilter);
+    }
+
 
     if (sortConfig.column) {
       sortableData.sort((a, b) => {
@@ -70,11 +106,13 @@ const App = () => {
         <Button type="submit" variant="outline-secondary" size="small" className="mb-2">Submit</Button>
       </Form>
       {data.length > 0 && (
-        <Table responsive size="sm" className="sticky text-light border border-secondary">
+        <Table responsive size="sm" className="sticky text-light border border-secondary text-center">
           <thead>
             <tr>
             <th onClick={() => handleSort('symbol')}>
                 Symbol
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={symbolFilter} onChange={(e) => setSymbolFilter(e.target.value.toUpperCase())}/>
                 {sortConfig.column === 'symbol' ? (
                   sortConfig.direction === 'ascending' ? '  🔼' : ' 🔽'
                 ) : null}
@@ -87,18 +125,24 @@ const App = () => {
               </th>
               <th onClick={() => handleSort('days')}>
                 DTE
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={dteFilter} onChange={(e) => setDteFilter(e.target.value)}/>
                 {sortConfig.column === 'days' ? (
                   sortConfig.direction === 'ascending' ? '  🔼' : ' 🔽'
                 ) : null}
               </th>
               <th onClick={() => handleSort('mprofit')}>
                 Max Profit
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={mprofitFilter} onChange={(e) => setMprofitFilter(e.target.value)}/>
                 {sortConfig.column === 'mprofit' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
                 </th>
                 <th onClick={() => handleSort('mloss')}>
                 Max Loss
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={mlossFilter} onChange={(e) => setMlossFilter(e.target.value)}/>
                 {sortConfig.column === 'mloss' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
@@ -112,18 +156,24 @@ const App = () => {
               </th>
               <th onClick={() => handleSort('mlodds')}>
                 Chance Max Loss
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={mloddsFilter} onChange={(e) => setMloddsFilter(e.target.value)}/>
                 {sortConfig.column === 'mlodds' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
               </th>
               <th onClick={() => handleSort('IV Rank')}>
                 IV Rank
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={ivrFilter} onChange={(e) => setIvrFilter(e.target.value)}/>
                 {sortConfig.column === 'IV Rank' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
               </th>
               <th onClick={() => handleSort('expectancy')}>
                 Probable Profit Per Trade (P3T)
+                {<br></br>}
+                <input type="text" placeholder="Filter ..." value={p3tFilter} onChange={(e) => setP3tFilter(e.target.value)}/>
                 {sortConfig.column === 'expectancy' ? (
                   sortConfig.direction === 'ascending' ? '🔼' : '🔽'
                 ) : null}
