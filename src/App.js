@@ -74,11 +74,11 @@ const App = () => {
     }
 
     if (mloddsFilter) {
-      sortableData = sortableData.filter((item) => item.mlodds*100 > mloddsFilter);
+      sortableData = sortableData.filter((item) => item.mlodds*100 < mloddsFilter);
     }
 
     if (ivrFilter) {
-      sortableData = sortableData.filter((item) => item.ivr*100 > mloddsFilter);
+      sortableData = sortableData.filter((item) => item.ivr*100 > ivrFilter);
     }
 
     if (p3tFilter) {
